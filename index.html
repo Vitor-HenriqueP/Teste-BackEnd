@@ -1,0 +1,84 @@
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>App Pesquisa Endereço</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+
+    <script>
+        function getDadosEnderecoPorCEP(cep) { 
+            let url = 'https://viacep.com.br/ws/' + cep + '/json/';
+
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', url);
+
+            xmlHttp.onreadystatechange = () => {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    let dadosJSONText = xmlHttp.responseText;
+                    let dados = JSON.parse(dadosJSONText);
+                    document.getElementById('endereco').value = dados.logradouro;
+                    document.getElementById('bairro').value = dados.bairro;
+                    document.getElementById('cidade').value = dados.localidade;
+                    document.getElementById('uf').value = dados.uf;
+					document.getElementById('ibge').value = dados.ibge;
+					document.getElementById('gia').value = dados.gia;
+					document.getElementById('ddd').value = dados.ddd;
+					document.getElementById('siafi').value = dados.siafi;
+                }
+            }
+
+            xmlHttp.send()
+
+        }
+    </script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-light bg-light mb-4">
+    <div class="container">
+        <div class="navbar-brand mb-0 h1">
+            <h3>App Pesquisa Endereço</h3>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row form-group">
+        <div class="col-sm-3">
+            <input type="text" class="form-control" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)"/>
+        </div>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="Endereço" readonly id="endereco"/>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-6">
+            <input type="text" class="form-control" placeholder="Bairro" readonly id="bairro"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Cidade" readonly id="cidade"/>
+        </div>
+
+        <div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="UF" readonly id="uf"/>
+        </div>
+		<div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="IBGE" readonly id="ibge"/>
+        </div>
+		<div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="GIA" readonly id="gia"/>
+        </div>
+		<div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="DDD" readonly id="ddd"/>
+        </div>
+		<div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="SIAFI" readonly id="siafi"/>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
