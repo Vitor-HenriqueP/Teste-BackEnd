@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="contatos.php">Contatos cadastrados</a>
         <a href="form.php">Cadastrar novo contato</a>
         <a href="form-endereco.php">Cadastrar endereço</a>
+        <a href="form-telefone.php">Cadastrar telefone</a>
     </div>
     <div class="container">
         <form action="../models/cadastrar_endereco.php" method="POST">

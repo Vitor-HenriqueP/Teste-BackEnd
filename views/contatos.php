@@ -43,6 +43,7 @@ if (isset($_GET['errorMessage'])) {
     <a href="contatos.php">Contatos cadastrados</a>
     <a href="form.php">Cadastrar novo contato</a>
     <a href="form-endereco.php">Cadastrar endereço</a>
+    <a href="form-telefone.php">Cadastrar telefone</a>
 </div>
 <h1>Contatos Cadastrados</h1>
 

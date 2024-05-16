@@ -53,7 +53,8 @@ if ($contato) {
 <div class="navbar">
     <a href="contatos.php">Contatos cadastrados</a>
     <a href="form.php">Cadastrar novo contato</a>
-    <a href="#">Cadastrar endereço</a>
+    <a href="form-endereco.php">Cadastrar endereço</a>
+    <a href="form-telefone.php">Cadastrar telefone</a>
 </div>
     <h1>Contato cadastrado com sucesso!</h1>
     <p><strong>Nome Completo:</strong> <?= htmlspecialchars($nomeCompleto) ?></p>
