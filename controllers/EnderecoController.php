@@ -23,7 +23,7 @@ class EnderecoController
     public function obterEnderecoPorContato($contato_id)
     {
         try {
-            $sql = "SELECT * FROM enderecos WHERE contato_id = :contato_id";
+            $sql = "SELECT * FROM endereco WHERE contato_id = :contato_id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':contato_id', $contato_id);
             $stmt->execute();
@@ -38,7 +38,8 @@ class EnderecoController
             echo "Erro ao obter endereço: " . $e->getMessage();
         }
     }
-    public function salvarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf)
+    
+    public function cadastrarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf)
     {
         try {
             $stmt = $this->conn->prepare("INSERT INTO endereco (contato_id, cep, endereco, numero_residencia, bairro, cidade, uf) VALUES (:contato_id, :cep, :endereco, :numero_residencia, :bairro, :cidade, :uf)");
@@ -51,7 +52,24 @@ class EnderecoController
             $stmt->bindParam(':uf', $uf);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception("Erro ao salvar endereço: " . $e->getMessage());
+            throw new Exception("Erro ao cadastrar endereço: " . $e->getMessage());
+        }
+    }
+
+    public function editarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf)
+    {
+        try {
+            $stmt = $this->conn->prepare("UPDATE endereco SET cep = :cep, endereco = :endereco, numero_residencia = :numero_residencia, bairro = :bairro, cidade = :cidade, uf = :uf WHERE contato_id = :contato_id");
+            $stmt->bindParam(':contato_id', $contato_id);
+            $stmt->bindParam(':cep', $cep);
+            $stmt->bindParam(':endereco', $endereco);
+            $stmt->bindParam(':numero_residencia', $numero_residencia);
+            $stmt->bindParam(':bairro', $bairro);
+            $stmt->bindParam(':cidade', $cidade);
+            $stmt->bindParam(':uf', $uf);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao editar endereço: " . $e->getMessage());
         }
     }
 }

@@ -16,8 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uf = $_POST['uf'];
 
     try {
-        $enderecoController->salvarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf);
-        echo "Endereço cadastrado com sucesso!";
+        $enderecoExistente = $enderecoController->obterEnderecoPorContato($contato_id);
+
+        if ($enderecoExistente) {
+            $enderecoController->editarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf);
+            echo "Endereço atualizado com sucesso!";
+        } else {
+            $enderecoController->cadastrarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf);
+            echo "Endereço cadastrado com sucesso!";
+        }
+        
         header("Location: ../views/home.php");
     } catch (Exception $e) {
         echo "Erro ao cadastrar endereço: " . $e->getMessage();

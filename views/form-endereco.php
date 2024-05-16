@@ -1,7 +1,29 @@
 <?php
 require_once '../controllers/ContatoController.php';
+require_once '../controllers/EnderecoController.php';
 $contatoController = new ContatoController();
+$enderecoController = new EnderecoController();
 $contatos = $contatoController->obterTodosContatos();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['contato_id']) && isset($_POST['cep']) && isset($_POST['endereco']) && isset($_POST['numero_residencia']) && isset($_POST['bairro']) && isset($_POST['cidade']) && isset($_POST['uf'])) {
+        $contato_id = $_POST['contato_id'];
+        $cep = $_POST['cep'];
+        $endereco = $_POST['endereco'];
+        $numero_residencia = $_POST['numero_residencia'];
+        $bairro = $_POST['bairro'];
+        $cidade = $_POST['cidade'];
+        $uf = $_POST['uf'];
+        $enderecos = $enderecoController->obterEnderecoPorContato($contato_id);
+        if ($enderecos) {
+            $enderecoController->editarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf);
+        } else {
+            $enderecoController->cadastrarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf);
+        }
+        header("Location: home.php");
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
