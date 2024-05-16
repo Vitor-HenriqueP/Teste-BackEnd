@@ -7,7 +7,7 @@ class ContatoController
 
     public function __construct()
     {
-        $host = 'localhost'; 
+        $host = 'localhost';  
         $db = 'testebackend';
         $user = 'root';       
         $pass = '';          

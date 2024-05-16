@@ -42,7 +42,7 @@ if (isset($_GET['errorMessage'])) {
 <div class="navbar">
     <a href="contatos.php">Contatos cadastrados</a>
     <a href="form.php">Cadastrar novo contato</a>
-    <a href="#">Cadastrar endereço</a>
+    <a href="form-endereco.php">Cadastrar endereço</a>
 </div>
 <h1>Contatos Cadastrados</h1>
 
