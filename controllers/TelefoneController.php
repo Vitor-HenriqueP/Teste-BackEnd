@@ -20,63 +20,52 @@ class TelefoneController
         }
     }
 
-    public function salvarTelefone($contato_id, $telefone_comercial, $telefone_residencial, $telefone_celular)
-    {
-        $this->salvarOuAtualizarTelefone($contato_id, $telefone_comercial, 'comercial');
-        $this->salvarOuAtualizarTelefone($contato_id, $telefone_residencial, 'residencial');
-        $this->salvarOuAtualizarTelefone($contato_id, $telefone_celular, 'celular');
-    }
-
-    private function salvarOuAtualizarTelefone($contato_id, $telefone, $tipo)
-    {
-        if (empty($telefone)) {
-            return;
-        }
-
-        $telefoneExistente = $this->obterTelefonePorTipo($contato_id, $tipo);
-        if ($telefoneExistente) {
-            $this->atualizarTelefone($contato_id, $telefone, $tipo);
-        } else {
-            $this->inserirTelefone($contato_id, $telefone, $tipo);
-        }
-    }
-
-    private function inserirTelefone($contato_id, $telefone, $tipo)
+    public function obterTelefonesPorContato($contato_id)
     {
         try {
-            $stmt = $this->conn->prepare("INSERT INTO telefone (contato_id, telefone, tipo) VALUES (:contato_id, :telefone, :tipo)");
+            $sql = "SELECT * FROM telefone WHERE contato_id = :contato_id";
+            $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':contato_id', $contato_id);
-            $stmt->bindParam(':telefone', $telefone);
-            $stmt->bindParam(':tipo', $tipo);
+            $stmt->execute();
+            $telefoneData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($telefoneData) {
+                return [
+                    'telefone_comercial' => $telefoneData['telefone_comercial'],
+                    'telefone_residencial' => $telefoneData['telefone_residencial'],
+                    'telefone_celular' => $telefoneData['telefone_celular']
+                ];
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            echo "Erro ao obter telefone: " . $e->getMessage();
+        }
+    }
+
+    public function salvarOuAtualizarTelefone($contato_id, $telefone_comercial, $telefone_residencial, $telefone_celular)
+    {
+        try {
+            $sql = "SELECT * FROM telefone WHERE contato_id = :contato_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':contato_id', $contato_id);
+            $stmt->execute();
+            $telefoneData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($telefoneData) {
+                $sql = "UPDATE telefone SET telefone_comercial = :telefone_comercial, telefone_residencial = :telefone_residencial, telefone_celular = :telefone_celular WHERE contato_id = :contato_id";
+            } else {
+                $sql = "INSERT INTO telefone (contato_id, telefone_comercial, telefone_residencial, telefone_celular) VALUES (:contato_id, :telefone_comercial, :telefone_residencial, :telefone_celular)";
+            }
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':contato_id', $contato_id);
+            $stmt->bindParam(':telefone_comercial', $telefone_comercial);
+            $stmt->bindParam(':telefone_residencial', $telefone_residencial);
+            $stmt->bindParam(':telefone_celular', $telefone_celular);
             $stmt->execute();
         } catch (PDOException $e) {
             throw new Exception("Erro ao salvar telefone: " . $e->getMessage());
-        }
-    }
-
-    private function atualizarTelefone($contato_id, $telefone, $tipo)
-    {
-        try {
-            $stmt = $this->conn->prepare("UPDATE telefone SET telefone = :telefone WHERE contato_id = :contato_id AND tipo = :tipo");
-            $stmt->bindParam(':contato_id', $contato_id);
-            $stmt->bindParam(':telefone', $telefone);
-            $stmt->bindParam(':tipo', $tipo);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            throw new Exception("Erro ao atualizar telefone: " . $e->getMessage());
-        }
-    }
-
-    public function obterTelefonePorTipo($contato_id, $tipo)
-    {
-        try {
-            $stmt = $this->conn->prepare("SELECT * FROM telefone WHERE contato_id = :contato_id AND tipo = :tipo");
-            $stmt->bindParam(':contato_id', $contato_id);
-            $stmt->bindParam(':tipo', $tipo);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            throw new Exception("Erro ao obter telefone: " . $e->getMessage());
         }
     }
 }

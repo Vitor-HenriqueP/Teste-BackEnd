@@ -5,18 +5,8 @@ require_once '../controllers/TelefoneController.php';
 $contatoController = new ContatoController();
 $telefoneController = new TelefoneController();
 $contatos = $contatoController->obterTodosContatos();
-
-$contato_id = isset($_GET['contato_id']) ? $_GET['contato_id'] : null;
-$telefone_comercial = '';
-$telefone_residencial = '';
-$telefone_celular = '';
-
-if ($contato_id) {
-    $telefone_comercial = $telefoneController->obterTelefonePorTipo($contato_id, 'comercial')['telefone'] ?? '';
-    $telefone_residencial = $telefoneController->obterTelefonePorTipo($contato_id, 'residencial')['telefone'] ?? '';
-    $telefone_celular = $telefoneController->obterTelefonePorTipo($contato_id, 'celular')['telefone'] ?? '';
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,6 +34,8 @@ if ($contato_id) {
             color: black;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
 
 <body>
@@ -57,23 +49,23 @@ if ($contato_id) {
         <form action="../models/cadastrar_telefone.php" method="POST">
             <div class="row form-group">
                 <div class="col-sm-6">
-                    <select class="form-control" name="contato_id" required onchange="this.form.submit()">
+                    <select class="form-control" name="contato_id" id="contato_id" required onchange="carregarTelefones(this.value)">
                         <option value="">Selecione um contato</option>
                         <?php foreach ($contatos as $contato) : ?>
-                            <option value="<?php echo $contato['id']; ?>" <?php echo ($contato_id == $contato['id']) ? 'selected' : ''; ?>><?php echo $contato['nome_completo']; ?></option>
+                            <option value="<?php echo $contato['id']; ?>"><?php echo $contato['nome_completo']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="Telefone Comercial" name="telefone_comercial" value="<?php echo $telefone_comercial; ?>">
+                    <input type="text" class="form-control" placeholder="Telefone Comercial" name="telefone_comercial" id="telefone_comercial">
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="Telefone Residencial" name="telefone_residencial" value="<?php echo $telefone_residencial; ?>">
+                    <input type="text" class="form-control" placeholder="Telefone Residencial" name="telefone_residencial" id="telefone_residencial">
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="Telefone Celular" name="telefone_celular" value="<?php echo $telefone_celular; ?>" required>
+                    <input type="text" class="form-control" placeholder="Telefone Celular" name="telefone_celular" id="telefone_celular" required>
                 </div>
             </div>
             <div class="row form-group">
@@ -83,6 +75,45 @@ if ($contato_id) {
             </div>
         </form>
     </div>
+    <script>
+        function carregarTelefones(contatoId) {
+            if (contatoId) {
+                $.ajax({
+                    url: '../models/obter_telefones.php',
+                    type: 'GET',
+                    data: { contato_id: contatoId },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) {
+                            $('#telefone_comercial').val(data.telefone_comercial);
+                            $('#telefone_residencial').val(data.telefone_residencial);
+                            $('#telefone_celular').val(data.telefone_celular);
+                        } else {
+                            $('#telefone_comercial').val('');
+                            $('#telefone_residencial').val('');
+                            $('#telefone_celular').val('');
+                        }
+                        aplicarMascara();
+                    }
+                });
+            } else {
+                $('#telefone_comercial').val('');
+                $('#telefone_residencial').val('');
+                $('#telefone_celular').val('');
+                aplicarMascara();
+            }
+        }
+
+        function aplicarMascara() {
+            $('#telefone_comercial').mask('(00) 0 0000-0000');
+            $('#telefone_residencial').mask('(00) 0 0000-0000');
+            $('#telefone_celular').mask('(00) 0 0000-0000');
+        }
+
+        $(document).ready(function () {
+            aplicarMascara();
+        });
+    </script>
 </body>
 
 </html>

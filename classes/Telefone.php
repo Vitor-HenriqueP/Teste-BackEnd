@@ -16,10 +16,15 @@ class Telefone
         $this->telefone_celular = $telefone_celular;
     }
 
-
+    // Getters and Setters
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function getContatoId()
@@ -27,9 +32,19 @@ class Telefone
         return $this->contato_id;
     }
 
-    public function getTelefoneComercial()
+    public function setContatoId($contato_id)
+    {
+        $this->contato_id = $contato_id;
+    }
+
+    public function getTelefone()
     {
         return $this->telefone_comercial;
+    }
+
+    public function setTelefone($telefone_comercial)
+    {
+        $this->telefone_comercial = $telefone_comercial;
     }
 
     public function getTelefoneResidencial()
@@ -37,28 +52,14 @@ class Telefone
         return $this->telefone_residencial;
     }
 
-    public function getTelefoneCelular()
-    {
-        return $this->telefone_celular;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    public function setContatoId($contato_id)
-    {
-        $this->contato_id = $contato_id;
-    }
-
-    public function setTelefoneComercial($telefone_comercial)
-    {
-        $this->telefone_comercial = $telefone_comercial;
-    }
-
     public function setTelefoneResidencial($telefone_residencial)
     {
         $this->telefone_residencial = $telefone_residencial;
+    }
+
+    public function getTelefoneCelular()
+    {
+        return $this->telefone_celular;
     }
 
     public function setTelefoneCelular($telefone_celular)
@@ -66,4 +67,5 @@ class Telefone
         $this->telefone_celular = $telefone_celular;
     }
 }
+
 ?>
