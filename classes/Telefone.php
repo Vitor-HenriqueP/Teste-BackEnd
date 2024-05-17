@@ -15,8 +15,6 @@ class Telefone
         $this->telefone_residencial = $telefone_residencial;
         $this->telefone_celular = $telefone_celular;
     }
-
-    // Getters and Setters
     public function getId()
     {
         return $this->id;

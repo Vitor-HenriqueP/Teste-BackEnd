@@ -1,7 +1,21 @@
 <?php
 require_once __DIR__ . '/../controllers/ContatoController.php';
+
+// Inicializa o controlador de contato
 $controller = new ContatoController();
-$contatos = $controller->obterTodosContatos();
+
+// Verifica se há uma consulta de pesquisa
+if (isset($_GET['search'])) {
+    // Obtém o termo de pesquisa do formulário
+    $searchTerm = $_GET['search'];
+    // Obtém os contatos filtrados pelo nome
+    $contatos = $controller->obterContatosPorNome($searchTerm);
+} else {
+    // Se não houver consulta de pesquisa, obtém todos os contatos
+    $contatos = $controller->obterTodosContatos();
+}
+
+// Verifica mensagens de sucesso ou erro
 if (isset($_GET['successMessage'])) {
     echo '<div style="color: green;">' . $_GET['successMessage'] . '</div>';
 }
@@ -17,6 +31,7 @@ if (isset($_GET['errorMessage'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contatos</title>
     <style>
+        /* Estilos CSS */
 
         .navbar {
             background-color: #333;
@@ -46,7 +61,11 @@ if (isset($_GET['errorMessage'])) {
     <a href="form-telefone.php">Cadastrar telefone</a>
 </div>
 <h1>Contatos Cadastrados</h1>
-
+<form action="contatos.php" method="get">
+    <label for="search">Pesquisar por nome:</label>
+    <input type="text" id="search" name="search">
+    <button type="submit">Pesquisar</button>
+</form>
 <table>
     <tr>
         <th>Nome Completo</th>
@@ -62,7 +81,7 @@ if (isset($_GET['errorMessage'])) {
             <td><?php echo $contato['email']; ?></td>
             <td><?php echo date('d/m/Y', strtotime($contato['data_nascimento'])); ?></td>
             <td>
-                <a href="editar_contato.php?id=<?php echo $contato['id']; ?>">Editar</a>
+                <a href="exibir_contato.php?id=<?php echo $contato['id']; ?>">Exibir mais informacoes</a>
                 <form action="../models/excluir_contato.php" method="post" style="display: inline;">
                     <input type="hidden" name="id" value="<?php echo $contato['id']; ?>">
                     <button type="submit">Excluir</button>

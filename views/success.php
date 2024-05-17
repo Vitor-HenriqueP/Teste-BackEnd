@@ -60,7 +60,7 @@ if ($contato) {
     <p><strong>Nome Completo:</strong> <?= htmlspecialchars($nomeCompleto) ?></p>
     <p><strong>CPF:</strong> <?= htmlspecialchars($cpf) ?></p>
     <p><strong>Email:</strong> <?= htmlspecialchars($email) ?></p>
-    <p><strong>Data de Nascimento:</strong> <?= date('d/m/Y', strtotime($dataNascimento)) ?></p> <!-- Converte a data para o formato DD/MM/AAAA -->
+    <p><strong>Data de Nascimento:</strong> <?= date('d/m/Y', strtotime($dataNascimento)) ?></p>
 </body>
 
 </html>

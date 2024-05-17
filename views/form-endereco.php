@@ -151,7 +151,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         document.getElementById('cidade').value = data.cidade;
                         document.getElementById('uf').value = data.uf;
                     } else {
-                        // Clear fields if no data
                         document.getElementById('cep').value = '';
                         document.getElementById('endereco').value = '';
                         document.getElementById('numero_residencia').value = '';

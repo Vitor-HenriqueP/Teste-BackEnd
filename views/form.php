@@ -11,7 +11,6 @@ unset($_SESSION['errorMessage']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Contato</title>
     <style>
-
         .navbar {
             background-color: #333;
             overflow: hidden;
@@ -34,12 +33,12 @@ unset($_SESSION['errorMessage']);
 </head>
 
 <body>
-<div class="navbar">
-    <a href="contatos.php">Contatos cadastrados</a>
-    <a href="form.php">Cadastrar novo contato</a>
-    <a href="form-endereco.php">Cadastrar endereço</a>
-    <a href="form-telefone.php">Cadastrar telefone</a>
-</div>
+    <div class="navbar">
+        <a href="contatos.php">Contatos cadastrados</a>
+        <a href="form.php">Cadastrar novo contato</a>
+        <a href="form-endereco.php">Cadastrar endereço</a>
+        <a href="form-telefone.php">Cadastrar telefone</a>
+    </div>
     <h1>Cadastro de Contato</h1>
     <?php if ($errorMessage) : ?>
         <p style="color: red;"><?php echo $errorMessage; ?></p>
@@ -49,7 +48,7 @@ unset($_SESSION['errorMessage']);
         <input type="text" id="nomeCompleto" name="nomeCompleto" required><br><br>
 
         <label for="cpf">CPF:</label><br>
-        <input type="text" id="cpf" name="cpf" required><br><br>
+        <input type="text" id="cpf" name="cpf" required maxlength="14"><br><br>
 
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br><br>
@@ -59,6 +58,17 @@ unset($_SESSION['errorMessage']);
 
         <input type="submit" value="Cadastrar">
     </form>
+
+    <script>
+        const cpfInput = document.getElementById('cpf');
+        cpfInput.addEventListener('input', function(e) {
+            let cpf = e.target.value.replace(/\D/g, '');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = cpf;
+        });
+    </script>
 </body>
 
 </html>
