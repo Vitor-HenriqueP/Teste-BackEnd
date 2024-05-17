@@ -1,0 +1,43 @@
+:root{
+    --color-white: #fff;
+    --color-black: #000;
+    --color-dark: #333;
+    --color-blue: #0099ff;
+    --color-blue2: #1b269c;
+    --color-green: #00ffae;
+}
+.navbar {
+    background-color: var(--color-dark);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: var(--color-white);
+    text-align: center;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 1px;
+}
+
+.navbar a:hover {
+    background: linear-gradient(to left, var(--color-blue), var(--color-green));
+    color: var(--color-black);
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+body{
+    background-color: var(--color-dark);
+    font-family: Arial, sans-serif;
+    color: var(--color-white);
+}

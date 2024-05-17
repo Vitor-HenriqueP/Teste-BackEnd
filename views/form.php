@@ -10,35 +10,17 @@ unset($_SESSION['errorMessage']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Contato</title>
-    <style>
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
-
 <body>
-    <div class="navbar">
-        <a href="contatos.php">Contatos cadastrados</a>
-        <a href="form.php">Cadastrar novo contato</a>
-        <a href="form-endereco.php">Cadastrar endereço</a>
-        <a href="form-telefone.php">Cadastrar telefone</a>
-    </div>
+<div class="navbar">
+    <a href="home.php"><span class="material-symbols-outlined">home</span></a>
+    <a href="contatos.php">Contatos cadastrados</a>
+    <a href="form.php">Cadastrar novo contato</a>
+    <a href="form-endereco.php">Cadastrar endereço</a>
+    <a href="form-telefone.php">Cadastrar telefone</a>
+</div>
     <h1>Cadastro de Contato</h1>
     <?php if ($errorMessage) : ?>
         <p style="color: red;"><?php echo $errorMessage; ?></p>
