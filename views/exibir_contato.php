@@ -3,36 +3,23 @@ require_once __DIR__ . '/../controllers/ContatoController.php';
 require_once __DIR__ . '/../controllers/EnderecoController.php';
 require_once __DIR__ . '/../controllers/TelefoneController.php';
 
-// Verifica se o ID do contato foi fornecido
 if (!isset($_GET['id'])) {
     header("Location: contatos.php?errorMessage=ID do contato não fornecido.");
     exit;
 }
-
-// Obtém o ID do contato da consulta GET
 $contatoId = $_GET['id'];
-
-// Inicializa os controladores
 $contatoController = new ContatoController();
 $enderecoController = new EnderecoController();
 $telefoneController = new TelefoneController();
 
 try {
-    // Obtém as informações do contato pelo ID
     $contato = $contatoController->obterContato($contatoId);
-    
-    // Verifica se o contato foi encontrado
     if (!$contato) {
         throw new Exception("Contato não encontrado.");
     }
-
-    // Obtém o endereço associado ao contato
     $endereco = $enderecoController->obterEnderecoPorContato($contatoId);
-    
-    // Obtém os telefones associados ao contato
     $telefones = $telefoneController->obterTelefonesPorContato($contatoId);
 } catch (Exception $e) {
-    // Redireciona de volta à página de contatos com mensagem de erro
     header("Location: contatos.php?errorMessage=" . urlencode($e->getMessage()));
     exit;
 }
@@ -69,13 +56,22 @@ try {
 <h2>Telefones</h2>
 <?php if (!empty($telefones)) : ?>
     <ul>
-        <?php foreach ($telefones as $telefone) : ?>
-            <li><?php echo $telefone->getNumero(); ?></li>
-        <?php endforeach; ?>
+        <li>
+            <?php echo $telefones['telefone_celular'] ? "Telefone Celular: " . $telefones['telefone_celular'] : "Nenhum telefone celular cadastrado"; ?>
+        </li>
+        <li>
+            <?php echo $telefones['telefone_comercial'] ? "Telefone Comercial: " . $telefones['telefone_comercial'] : "Nenhum telefone comercial cadastrado"; ?>
+        </li>
+        <li>
+            <?php echo $telefones['telefone_residencial'] ? "Telefone Residencial: " . $telefones['telefone_residencial'] : "Nenhum telefone residencial cadastrado"; ?>
+        </li>
     </ul>
 <?php else : ?>
     <p>Nenhum telefone cadastrado para este contato.</p>
 <?php endif; ?>
+
+
+
 
 </body>
 </html>

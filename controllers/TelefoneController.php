@@ -28,7 +28,7 @@ class TelefoneController
             $stmt->bindParam(':contato_id', $contato_id);
             $stmt->execute();
             $telefoneData = $stmt->fetch(PDO::FETCH_ASSOC);
-
+            $telefones = [];
             if ($telefoneData) {
                 return [
                     'telefone_comercial' => $telefoneData['telefone_comercial'],
@@ -38,10 +38,45 @@ class TelefoneController
             } else {
                 return null;
             }
+            while ($telefoneData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $telefone = new Telefone(
+                    $telefoneData['contato_id'],
+                    $telefoneData['telefone_comercial'],
+                    $telefoneData['telefone_residencial'],
+                    $telefoneData['telefone_celular']
+                );
+                $telefones[] = $telefone;
+            }
+
+            return $telefones;
+            
         } catch (PDOException $e) {
-            echo "Erro ao obter telefone: " . $e->getMessage();
+            throw new Exception("Erro ao obter telefones: " . $e->getMessage());
+        }
+        
+    }
+    public function getNumeroTelefoneDisponivel($telefones)
+{
+    foreach ($telefones as $telefone) {
+        if ($telefone->getTelefoneCelular() !== null) {
+            return $telefone->getTelefoneCelular();
         }
     }
+    foreach ($telefones as $telefone) {
+        if ($telefone->getTelefone() !== null) {
+            return $telefone->getTelefone();
+        }
+    }
+    foreach ($telefones as $telefone) {
+        if ($telefone->getTelefoneResidencial() !== null) {
+            return $telefone->getTelefoneResidencial();
+        }
+    }
+    return null;
+}
+
+
+
 
     public function salvarOuAtualizarTelefone($contato_id, $telefone_comercial, $telefone_residencial, $telefone_celular)
     {
