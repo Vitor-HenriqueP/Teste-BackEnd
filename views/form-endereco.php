@@ -66,12 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="row form-group">
                 <div class="col-sm-6">
-                    <select class="form-control" name="contato_id" required>
+                    <select class="form-control" name="contato_id" id="contato_id" required onchange="carregarEndereco()">
                         <option value="">Selecione um contato</option>
                         <?php foreach ($contatos as $contato) : ?>
-                            <?php if (!$contato['endereco']) : ?>
-                                <option value="<?php echo $contato['id']; ?>"><?php echo $contato['nome_completo']; ?></option>
-                            <?php endif; ?>
+                            <option value="<?php echo $contato['id']; ?>"><?php echo $contato['nome_completo']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -79,13 +77,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="row form-group">
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)" name="cep" required>
+                    <input type="text" class="form-control" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)" name="cep" id="cep" required>
                 </div>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" placeholder="Rua" name="endereco" id="endereco" required>
                 </div>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="Número" name="numero_residencia" required>
+                    <input type="text" class="form-control" placeholder="Número" name="numero_residencia" id="numero_residencia" required>
                 </div>
             </div>
             <div class="row form-group">
@@ -96,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" class="form-control" placeholder="Cidade" name="cidade" id="cidade" required>
                 </div>
                 <div class="col-sm-2">
-                    <select class="form-control" name="uf" id="uf">
+                    <select class="form-control" name="uf" id="uf" required>
                         <option value="">Selecione um estado</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
@@ -139,6 +137,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 <script>
+    document.getElementById('contato_id').addEventListener('change', function() {
+        const contato_id = this.value;
+        if (contato_id) {
+            fetch('../models/obter_endereco.php?contato_id=' + contato_id)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById('cep').value = data.cep;
+                        document.getElementById('endereco').value = data.endereco;
+                        document.getElementById('numero_residencia').value = data.numero_residencia;
+                        document.getElementById('bairro').value = data.bairro;
+                        document.getElementById('cidade').value = data.cidade;
+                        document.getElementById('uf').value = data.uf;
+                    } else {
+                        // Clear fields if no data
+                        document.getElementById('cep').value = '';
+                        document.getElementById('endereco').value = '';
+                        document.getElementById('numero_residencia').value = '';
+                        document.getElementById('bairro').value = '';
+                        document.getElementById('cidade').value = '';
+                        document.getElementById('uf').value = '';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+
     function getDadosEnderecoPorCEP(cep) {
         let url = 'https://viacep.com.br/ws/' + cep + '/json/';
 
@@ -157,7 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         xmlHttp.send()
-
     }
 </script>
 

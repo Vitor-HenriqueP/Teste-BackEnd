@@ -20,6 +20,36 @@ class Endereco
         $this->uf = $uf;
     }
 
+    public function getCep()
+    {
+        return $this->cep;
+    }
+
+    public function getEndereco()
+    {
+        return $this->endereco;
+    }
+
+    public function getNumeroResidencia()
+    {
+        return $this->numero_residencia;
+    }
+
+    public function getBairro()
+    {
+        return $this->bairro;
+    }
+
+    public function getCidade()
+    {
+        return $this->cidade;
+    }
+
+    public function getUf()
+    {
+        return $this->uf;
+    }
+
     public function salvarEndereco($contato_id)
     {
         try {
@@ -34,7 +64,6 @@ class Endereco
             if ($enderecoExistente) {
                 $sql = "UPDATE enderecos SET cep = :cep, endereco = :endereco, numero_residencia = :numero_residencia, bairro = :bairro, cidade = :cidade, uf = :uf WHERE contato_id = :contato_id";
             } else {
-
                 $sql = "INSERT INTO enderecos (contato_id, cep, endereco, numero_residencia, bairro, cidade, uf) VALUES (:contato_id, :cep, :endereco, :numero_residencia, :bairro, :cidade, :uf)";
             }
 
