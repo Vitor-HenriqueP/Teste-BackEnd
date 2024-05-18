@@ -6,6 +6,7 @@
     --color-blue2: #1b269c;
     --color-green: #00ffae;
 }
+
 .navbar {
     background-color: var(--color-dark);
     overflow: hidden;

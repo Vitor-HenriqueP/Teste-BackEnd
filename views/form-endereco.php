@@ -31,90 +31,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Agenda | Cadastro de endereco</title>
+    <link rel="icon" href="../assets/images/contacts.png" type="image/png">
+    <link rel="stylesheet" href="../assets/css/styleAll.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
+
 <body>
-<div class="navbar">
-    <a href="home.php"><span class="material-symbols-outlined">home</span></a>
-    <a href="contatos.php">Contatos cadastrados</a>
-    <a href="form.php">Cadastrar novo contato</a>
-    <a href="form-endereco.php">Cadastrar endereço</a>
-    <a href="form-telefone.php">Cadastrar telefone</a>
-</div>
+    <div class="navbar">
+        <a href="home.php"><span class="material-symbols-outlined">home</span></a>
+        <a href="contatos.php">Contatos cadastrados</a>
+        <a href="form.php">Cadastrar novo contato</a>
+        <a href="form-endereco.php">Cadastrar endereço</a>
+        <a href="form-telefone.php">Cadastrar telefone</a>
+    </div>
     <div class="container">
-        <form action="../models/cadastrar_endereco.php" method="POST">
+        <h1>Cadastro de endereço</h1>
+    </div>
+    <div class="container">
+        <div class="form-container">
+            <form action="../models/cadastrar_endereco.php" method="POST">
+                <div class="row form-group">
+                    <div class="col-sm-6">
+                        <select class="form-control" name="contato_id" id="contato_id" required onchange="carregarEndereco()">
+                            <option value="">Selecione um contato</option>
+                            <?php foreach ($contatos as $contato) : ?>
+                                <option value="<?php echo $contato['id']; ?>"><?php echo $contato['nome_completo']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
 
-            <div class="row form-group">
-                <div class="col-sm-6">
-                    <select class="form-control" name="contato_id" id="contato_id" required onchange="carregarEndereco()">
-                        <option value="">Selecione um contato</option>
-                        <?php foreach ($contatos as $contato) : ?>
-                            <option value="<?php echo $contato['id']; ?>"><?php echo $contato['nome_completo']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)" name="cep" id="cep" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" placeholder="Rua" name="endereco" id="endereco" required>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" placeholder="Número" name="numero_residencia" id="numero_residencia" required>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" placeholder="Bairro" name="bairro" id="bairro" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" placeholder="Cidade" name="cidade" id="cidade" required>
+                        </div>
+                        <div class="col-sm-2">
+                            <select class="form-control" name="uf" id="uf" required>
+                                <option value="">Selecione um estado</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                    </div>
 
-            <div class="row form-group">
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)" name="cep" id="cep" required>
-                </div>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="Rua" name="endereco" id="endereco" required>
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="Número" name="numero_residencia" id="numero_residencia" required>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="Bairro" name="bairro" id="bairro" required>
-                </div>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="Cidade" name="cidade" id="cidade" required>
-                </div>
-                <div class="col-sm-2">
-                    <select class="form-control" name="uf" id="uf" required>
-                        <option value="">Selecione um estado</option>
-                        <option value="AC">Acre</option>
-                        <option value="AL">Alagoas</option>
-                        <option value="AP">Amapá</option>
-                        <option value="AM">Amazonas</option>
-                        <option value="BA">Bahia</option>
-                        <option value="CE">Ceará</option>
-                        <option value="DF">Distrito Federal</option>
-                        <option value="ES">Espírito Santo</option>
-                        <option value="GO">Goiás</option>
-                        <option value="MA">Maranhão</option>
-                        <option value="MT">Mato Grosso</option>
-                        <option value="MS">Mato Grosso do Sul</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="PA">Pará</option>
-                        <option value="PB">Paraíba</option>
-                        <option value="PR">Paraná</option>
-                        <option value="PE">Pernambuco</option>
-                        <option value="PI">Piauí</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="RN">Rio Grande do Norte</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="RO">Rondônia</option>
-                        <option value="RR">Roraima</option>
-                        <option value="SC">Santa Catarina</option>
-                        <option value="SP">São Paulo</option>
-                        <option value="SE">Sergipe</option>
-                        <option value="TO">Tocantins</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row form-group">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">Salvar Endereço</button>
-                </div>
-            </div>
-        </form>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary">Salvar Endereço</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
     </div>
 </body>
 
