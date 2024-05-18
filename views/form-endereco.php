@@ -1,9 +1,11 @@
 <?php
 require_once '../controllers/ContatoController.php';
 require_once '../controllers/EnderecoController.php';
+
 $contatoController = new ContatoController();
 $enderecoController = new EnderecoController();
 $contatos = $contatoController->obterTodosContatos();
+$mensagem_sucesso = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['contato_id']) && isset($_POST['cep']) && isset($_POST['endereco']) && isset($_POST['numero_residencia']) && isset($_POST['bairro']) && isset($_POST['cidade']) && isset($_POST['uf'])) {
@@ -20,21 +22,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $enderecoController->cadastrarEndereco($contato_id, $cep, $endereco, $numero_residencia, $bairro, $cidade, $uf);
         }
-        header("Location: home.php");
-        exit();
+        $mensagem_sucesso = "Endereço cadastrado com sucesso.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda | Cadastro de endereco</title>
+    <title>Agenda | Cadastro de endereço</title>
     <link rel="icon" href="../assets/images/contacts.png" type="image/png">
-    <link rel="stylesheet" href="../assets/css/styleAll.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
 
 <body>
@@ -48,9 +52,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <h1>Cadastro de endereço</h1>
     </div>
+    <?php if ($mensagem_sucesso) : ?>
+        <div class="container">
+            <div class="alert alert-success">
+                <p style="color: green;"><?php echo $mensagem_sucesso; ?></p>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="container">
         <div class="form-container">
-            <form action="../models/cadastrar_endereco.php" method="POST">
+            <form action="form-endereco.php" method="POST">
                 <div class="row form-group">
                     <div class="col-sm-6">
                         <select class="form-control" name="contato_id" id="contato_id" required onchange="carregarEndereco()">
@@ -121,54 +132,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
         </div>
     </div>
-</body>
 
-<script>
-    document.getElementById('contato_id').addEventListener('change', function() {
-        const contato_id = this.value;
-        if (contato_id) {
-            fetch('../models/obter_endereco.php?contato_id=' + contato_id)
-                .then(response => response.json())
-                .then(data => {
-                    if (data) {
-                        document.getElementById('cep').value = data.cep;
-                        document.getElementById('endereco').value = data.endereco;
-                        document.getElementById('numero_residencia').value = data.numero_residencia;
-                        document.getElementById('bairro').value = data.bairro;
-                        document.getElementById('cidade').value = data.cidade;
-                        document.getElementById('uf').value = data.uf;
-                    } else {
-                        document.getElementById('cep').value = '';
-                        document.getElementById('endereco').value = '';
-                        document.getElementById('numero_residencia').value = '';
-                        document.getElementById('bairro').value = '';
-                        document.getElementById('cidade').value = '';
-                        document.getElementById('uf').value = '';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    });
+    <script>
+        $(document).ready(function() {
+            $('#cep').mask('00000-000');
+        });
 
-    function getDadosEnderecoPorCEP(cep) {
-        let url = 'https://viacep.com.br/ws/' + cep + '/json/';
-
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open('GET', url);
-
-        xmlHttp.onreadystatechange = () => {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                let dadosJSONText = xmlHttp.responseText;
-                let dados = JSON.parse(dadosJSONText);
-                document.getElementById('endereco').value = dados.logradouro;
-                document.getElementById('bairro').value = dados.bairro;
-                document.getElementById('cidade').value = dados.localidade;
-                document.getElementById('uf').value = dados.uf;
+        document.getElementById('contato_id').addEventListener('change', function() {
+            const contato_id = this.value;
+            if (contato_id) {
+                fetch('../models/obter_endereco.php?contato_id=' + contato_id)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            document.getElementById('cep').value = data.cep;
+                            document.getElementById('endereco').value = data.endereco;
+                            document.getElementById('numero_residencia').value = data.numero_residencia;
+                            document.getElementById('bairro').value = data.bairro;
+                            document.getElementById('cidade').value = data.cidade;
+                            document.getElementById('uf').value = data.uf;
+                        } else {
+                            document.getElementById('cep').value = '';
+                            document.getElementById('endereco').value = '';
+                            document.getElementById('numero_residencia').value = '';
+                            document.getElementById('bairro').value = '';
+                            document.getElementById('cidade').value = '';
+                            document.getElementById('uf').value = '';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             }
-        }
+        });
 
-        xmlHttp.send()
-    }
-</script>
+        function getDadosEnderecoPorCEP(cep) {
+            let url = 'https://viacep.com.br/ws/' + cep + '/json/';
+
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', url);
+
+            xmlHttp.onreadystatechange = () => {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    let dadosJSONText = xmlHttp.responseText;
+                    let dados = JSON.parse(dadosJSONText);
+                    document.getElementById('endereco').value = dados.logradouro;
+                    document.getElementById('bairro').value = dados.bairro;
+                    document.getElementById('cidade').value = dados.localidade;
+                    document.getElementById('uf').value = dados.uf;
+                }
+            }
+
+            xmlHttp.send()
+        }
+    </script>
+</body>
 
 </html>

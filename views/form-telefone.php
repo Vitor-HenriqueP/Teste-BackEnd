@@ -5,6 +5,32 @@ require_once '../controllers/TelefoneController.php';
 $contatoController = new ContatoController();
 $telefoneController = new TelefoneController();
 $contatos = $contatoController->obterTodosContatos();
+$mensagem_sucesso = "";
+$mensagem_erro = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['contato_id']) && isset($_POST['telefone_comercial']) && isset($_POST['telefone_residencial']) && isset($_POST['telefone_celular'])) {
+        $contato_id = $_POST['contato_id'];
+        $telefone_comercial = $_POST['telefone_comercial'];
+        $telefone_residencial = $_POST['telefone_residencial'];
+        $telefone_celular = $_POST['telefone_celular'];
+
+        try {
+            $telefoneController->salvarOuAtualizarTelefone($contato_id, $telefone_comercial, $telefone_residencial, $telefone_celular);
+            $mensagem_sucesso = "Telefone cadastrado com sucesso.";
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                $mensagem_erro = "Telefone celular já está cadastrado para outro contato!";
+            } else {
+                $mensagem_erro = "Erro ao cadastrar telefone: " . $e->getMessage();
+            }
+        } catch (Exception $e) {
+            $mensagem_erro = "Erro ao cadastrar telefone: " . $e->getMessage();
+        }
+    } else {
+        $mensagem_erro = "Preencha todos os campos obrigatórios.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +41,7 @@ $contatos = $contatoController->obterTodosContatos();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda | Cadastro de telefone</title>
     <link rel="icon" href="../assets/images/contacts.png" type="image/png">
-    <link rel="stylesheet" href="../assets/css/styleAll.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -32,9 +58,25 @@ $contatos = $contatoController->obterTodosContatos();
     <div class="container">
         <h1>Cadastro de telefone</h1>
     </div>
+    <?php if ($mensagem_sucesso) : ?>
+        <?php if ($mensagem_sucesso) : ?>
+            <div class="container">
+                <div class="alert alert-success">
+                    <p style="color: green;"><?php echo $mensagem_sucesso; ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+    <?php if ($mensagem_erro) : ?>
+        <div class="container">
+            <div class="alert alert-danger">
+                <p style="color: red;"><?php echo $mensagem_erro; ?></p>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="container">
         <div class="form-container">
-            <form action="../models/cadastrar_telefone.php" method="POST">
+            <form action="form-telefone.php" method="POST">
                 <div class="row form-group">
                     <div class="col-sm-6">
                         <select class="form-control" name="contato_id" id="contato_id" required onchange="carregarTelefones(this.value)">

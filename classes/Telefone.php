@@ -65,5 +65,4 @@ class Telefone
         $this->telefone_celular = $telefone_celular;
     }
 }
-
 ?>

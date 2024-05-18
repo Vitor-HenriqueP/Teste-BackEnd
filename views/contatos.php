@@ -13,10 +13,10 @@ if (isset($_GET['search'])) {
 }
 
 if (isset($_GET['successMessage'])) {
-    echo '<div style="color: green;">' . $_GET['successMessage'] . '</div>';
+    echo '<div class="container" style="color: green;">' . $_GET['successMessage'] . '</div>';
 }
 if (isset($_GET['errorMessage'])) {
-    echo '<div style="color: red;">' . $_GET['errorMessage'] . '</div>';
+    echo '<div class="container" style="color: red;">' . $_GET['errorMessage'] . '</div>';
 }
 ?>
 
@@ -28,7 +28,7 @@ if (isset($_GET['errorMessage'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda | Contatos</title>
     <link rel="icon" href="../assets/images/contacts.png" type="image/png">
-    <link rel="stylesheet" href="../assets/css/styleAll.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 

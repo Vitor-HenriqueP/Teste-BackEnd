@@ -100,7 +100,11 @@ class TelefoneController
             $stmt->bindParam(':telefone_celular', $telefone_celular);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception("Erro ao salvar telefone: " . $e->getMessage());
+            if ($e->getCode() == 23000) { 
+                throw new Exception("O telefone indicado já está cadastrado para outro contato!");
+            } else {
+                throw new Exception("Erro ao salvar telefone: " . $e->getMessage());
+            }
         }
     }
 }

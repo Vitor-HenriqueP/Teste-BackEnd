@@ -4,7 +4,6 @@ require_once __DIR__ . '/../classes/Endereco.php';
 class EnderecoController
 {
     private $conn;
-
     public function __construct()
     {
         $host = 'localhost';  

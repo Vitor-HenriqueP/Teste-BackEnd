@@ -4,7 +4,6 @@ require_once '../controllers/TelefoneController.php';
 
 if (isset($_GET['contato_id'])) {
     $contato_id = $_GET['contato_id'];
-
     $telefoneController = new TelefoneController();
     $telefones = $telefoneController->obterTelefonesPorContato($contato_id);
 

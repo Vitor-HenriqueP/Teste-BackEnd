@@ -4,9 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     require_once '../config/database.php';
     require_once '../controllers/TelefoneController.php';
-
     $telefoneController = new TelefoneController();
-
     $contato_id = $_POST['contato_id'];
     $telefone_comercial = isset($_POST['telefone_comercial']) ? $_POST['telefone_comercial'] : '';
     $telefone_residencial = isset($_POST['telefone_residencial']) ? $_POST['telefone_residencial'] : '';

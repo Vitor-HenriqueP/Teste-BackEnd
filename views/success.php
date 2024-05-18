@@ -28,7 +28,7 @@ if ($contato) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda | Cadastro concluído</title>
     <link rel="icon" href="../assets/images/contacts.png" type="image/png">
-    <link rel="stylesheet" href="../assets/css/styleAll.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 

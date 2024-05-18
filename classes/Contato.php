@@ -1,5 +1,6 @@
 <?php
 
+
 class Contato {
     private $nomeCompleto;
     private $cpf;

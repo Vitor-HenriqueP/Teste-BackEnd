@@ -4,9 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     require_once '../config/database.php';
     require_once '../controllers/EnderecoController.php';
-
     $enderecoController = new EnderecoController();
-
     $contato_id = $_POST['contato_id'];
     $cep = $_POST['cep'];
     $endereco = $_POST['endereco'];

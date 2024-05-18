@@ -138,8 +138,7 @@ class ContatoController
                     } else {
                         return null;
                     }
-                }
-            
+                }  
                 public function excluirContato($id)
                 {
                     try {

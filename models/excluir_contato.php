@@ -3,7 +3,6 @@ require_once __DIR__ . '/../controllers/ContatoController.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];
-
     $controller = new ContatoController();
     try {
         $controller->excluirContato($id);

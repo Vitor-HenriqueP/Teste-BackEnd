@@ -6,7 +6,6 @@ if (isset($_GET['contato_id'])) {
     $contato_id = $_GET['contato_id'];
     $enderecoController = new EnderecoController();
     $endereco = $enderecoController->obterEnderecoPorContato($contato_id);
-
     if ($endereco) {
         $response = array(
             'cep' => $endereco->getCep(),

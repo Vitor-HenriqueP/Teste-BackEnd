@@ -66,7 +66,6 @@ class Endereco
             } else {
                 $sql = "INSERT INTO enderecos (contato_id, cep, endereco, numero_residencia, bairro, cidade, uf) VALUES (:contato_id, :cep, :endereco, :numero_residencia, :bairro, :cidade, :uf)";
             }
-
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':contato_id', $contato_id);
             $stmt->bindParam(':cep', $this->cep);
