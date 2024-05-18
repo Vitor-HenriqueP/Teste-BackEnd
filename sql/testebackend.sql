@@ -91,8 +91,6 @@ ALTER TABLE `endereco`
 ALTER TABLE `telefone`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `telefone_celular` (`telefone_celular`),
-  ADD UNIQUE KEY `telefone_comercial` (`telefone_comercial`),
-  ADD UNIQUE KEY `telefone_residencial` (`telefone_residencial`),
   ADD KEY `contato_id` (`contato_id`);
 
 --
